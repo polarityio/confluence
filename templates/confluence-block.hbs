@@ -1,0 +1,14 @@
+{{#each block.data.details.body.results as |data|}}
+<div class = "page">
+    {{#if data.content.title}}
+        <span class="plink"> Page: </span>
+        <b><a href ="{{block.data.details.url}}{{data.url}}"> {{data.content.title}} </a></b>
+    {{/if}}
+</div>
+<div class = "space">
+    {{#if data.space.name}}
+        <span class="slink">Space: </span>
+        <b><a href ="{{block.data.details.url}}{{data.url}}"> {{data.space.name}} </a></b>
+    {{/if}}
+</div>
+{{/each}}

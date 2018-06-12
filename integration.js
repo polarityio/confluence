@@ -70,6 +70,14 @@ function _lookupEntity(entityObj, options, cb) {
       return;
     }
 
+    if (response.statusCode === 400) {
+      cb(null, {
+        entity: entityObj,
+        data: null // setting data to null indicates to the server that this entity lookup was a "miss"
+      });
+      return;
+    }
+
     if (response.statusCode !== 200) {
       cb({
         detail: 'Unexpected HTTP Status Code Received',
@@ -81,6 +89,14 @@ function _lookupEntity(entityObj, options, cb) {
     log.debug({body: body}, "Checking Null results for body");
 
     if (_.isNull(body) || _.isEmpty(body.results)){
+      cb(null, {
+        entity: entityObj,
+        data: null // setting data to null indicates to the server that this entity lookup was a "miss"
+      });
+      return;
+    }
+
+    if(_.find(body.results, 'user')){
       cb(null, {
         entity: entityObj,
         data: null // setting data to null indicates to the server that this entity lookup was a "miss"
@@ -113,6 +129,8 @@ function _lookupEntity(entityObj, options, cb) {
         }
       });
     }
+
+
 
 
     // The lookup results returned is an array of lookup objects with the following format

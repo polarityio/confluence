@@ -1,4 +1,4 @@
-# Polarity PulseDive Integration
+# Polarity Confluence Integration
 
 The Polarity Confluence integration allows Polarity to search Confluence to return any Space, Page of Blog that is contained in confluence.
 

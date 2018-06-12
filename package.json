@@ -2,7 +2,7 @@
   "main": "./integration.js",
   "name": "Confluence",
   "description": "Confluence siteSearch",
-  "version": "1.3.0",
+  "version": "3.0.4",
   "private": true,
   "dependencies": {
     "request": ">=2.76.0",

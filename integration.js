@@ -22,6 +22,10 @@ function doLookup(entities, options, cb) {
         next(err);
       } else {
         lookupResults.push(result);
+
+        log.trace({
+          result: result
+        }, "Checking Results");
         next(null);
       }
     });
@@ -55,13 +59,7 @@ function _lookupEntity(entityObj, options, cb) {
       });
       return;
     }
-    log.trace({
-      response: response
-    }, "what is the response");
 
-    log.trace({
-      body: body
-    }, "REST Response Body");
 
     // If we get a 404 then cache a miss
     if (response.statusCode === 404) {
@@ -79,9 +77,43 @@ function _lookupEntity(entityObj, options, cb) {
       });
       return;
     }
-    log.debug({
-      body: body
-    }, "REST Response Body");
+
+    log.debug({body: body}, "Checking Null results for body");
+
+    if (_.isNull(body) || _.isEmpty(body.results)){
+      cb(null, {
+        entity: entityObj,
+        data: null // setting data to null indicates to the server that this entity lookup was a "miss"
+      });
+      return;
+    }
+
+
+    if (options.searchSpace) {
+      var spaceData = body.results.filter(function (item){
+        if(item != null){
+          return item.space
+        }
+      });
+    }
+
+    if (options.searchPage) {
+      var pageData = body.results.filter(function (item){
+        if(item.content != null){
+          return item.content.type === "page"
+        }
+
+      });
+    }
+
+    if (options.searchBlog) {
+      var blogData = body.results.filter(function (item){
+        if(item.content != null){
+          return item.content.type === "blogpost"
+        }
+      });
+    }
+
 
     // The lookup results returned is an array of lookup objects with the following format
     cb(null, {
@@ -94,7 +126,9 @@ function _lookupEntity(entityObj, options, cb) {
         // Data that you want to pass back to the notification window details block
         details: {
           url: url,
-          body: body
+          space: spaceData,
+          page: pageData,
+          blog: blogData
         }
       }
     });

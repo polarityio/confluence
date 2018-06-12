@@ -1,6 +1,20 @@
-{{#each (limit allTitles maxTitlesInSummary) as |title|}}
-    <span class="integration-summary-title integration-background-color integration-border-color">
-   <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
-    <span class="integration-text-color">{{title}}</span>
-</span>
+{{#each allSpaces as |tag|}}
+    <span class="integration-summary-tag integration-background-color integration-border-color">
+       <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
+       <span class="integration-text-color">{{tag}}</span>
+    </span>
+{{/each}}
+
+{{#each allPages as |tag|}}
+    <span class="integration-summary-tag integration-background-color integration-border-color">
+       <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
+       <span class="integration-text-color">{{tag}}</span>
+    </span>
+{{/each}}
+
+{{#each allBlogs as |tag|}}
+    <span class="integration-summary-tag integration-background-color integration-border-color">
+       <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
+       <span class="integration-text-color">{{tag}}</span>
+    </span>
 {{/each}}

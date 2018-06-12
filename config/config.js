@@ -16,7 +16,7 @@ module.exports = {
    */
   acronym: "CONF",
 
-  entityTypes: ['string'],
+  entityTypes: ['*'],
 
   logging: {
     level: 'trace',
@@ -233,6 +233,33 @@ module.exports = {
        * @type Boolean
        */
       "adminOnly": false
-    }
+    },
+    {
+      "key": "searchSpace",
+      "name": "Confluence Space Search",
+      "description": "If checked, the integration will search keywords/phrases in Confluence spaces",
+      "default": true,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "searchPage",
+      "name": "Confluence Page Search",
+      "description": "If checked, the integration will search keywords/phrases in Confluence pages",
+      "default": true,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "searchBlog",
+      "name": "Confluence Blog Search",
+      "description": "If checked, the integration will search keywords/phrases in Confluence blogs",
+      "default": true,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
   ]
 };

@@ -1,14 +1,32 @@
-{{#each block.data.details.body.results as |data|}}
-<div class = "page">
-    {{#if data.content.title}}
-        <span class="plink"> Page: </span>
-        <b><a href ="{{block.data.details.url}}{{data.url}}"> {{data.content.title}} </a></b>
+
+
+<div>
+  {{#each data.space as |space|}}
+    {{#if space.space.name}}
+        <span class="p-key">Space: </span>
+        <span class ="p-value"><a href ="{{data.url}}{{space.space.url}}"> {{space.space.name}} </a></span>
     {{/if}}
+  {{/each}}
 </div>
-<div class = "space">
-    {{#if data.space.name}}
-        <span class="slink">Space: </span>
-        <b><a href ="{{block.data.details.url}}{{data.url}}"> {{data.space.name}} </a></b>
-    {{/if}}
+
+
+
+<div>
+  {{#each data.page as |page|}}
+    {{#if page.content.title}}
+        <span class="p-value"> Page: </span>
+        <span class ="p-value"><a href ="{{data.url}}{{page._links.webui}}"> {{page.content.title}} </a></span>
+  {{/if}}
+  {{/each}}
 </div>
-{{/each}}
+
+
+
+<div>
+  {{#each data.blog as |blog|}}
+    {{#if blog.content.title}}
+        <span class="p-key">Blog: </span>
+        <span class="p-value"><a href ="{{data.url}}{{blog._links.webui}}"> {{blog.content.title}} </a></span>
+  {{/if}}
+  {{/each}}
+</div>

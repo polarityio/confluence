@@ -1,12 +1,19 @@
+{{#if data.space}}
+  <span class = "p-value">Spaces</span>
 {{#each data.space as |space|}}
     {{#if space.space.name}}
     <div>
         <span class="p-key">Space: </span>
         <span class ="p-value"><a href ="{{data.url}}{{space.space.url}}"> {{space.space.name}} </a></span>
     </div>
+
     {{/if}}
 {{/each}}
+<hr/>
+{{/if}}
 
+{{#if data.page}}
+<span class ="p-value"> Pages </span>
 {{#each data.page as |page|}}
   {{#if page.content.title}}
     <div>
@@ -15,7 +22,11 @@
   </div>
   {{/if}}
 {{/each}}
+<hr/>
+{{/if}}
 
+{{#if data.blog}}
+<span class="p-value"> Blogs </span>
 {{#each data.blog as |blog|}}
     {{#if blog.content.title}}
     <div>
@@ -24,3 +35,4 @@
       </div>
   {{/if}}
 {{/each}}
+{{/if}}

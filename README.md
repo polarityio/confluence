@@ -2,7 +2,7 @@
 
 The Polarity Confluence integration allows Polarity to search Confluence to return any Space, Page of Blog that is contained in confluence.
 
-![image](https://user-images.githubusercontent.com/22529325/41290751-d1f1a5aa-6e1b-11e8-98dd-4c9f76feca58.png)
+![image](https://user-images.githubusercontent.com/22529325/41306906-a05121f4-6e45-11e8-8ccb-e4ab156826f6.png)
 
 
 ## Confluence Integration Options

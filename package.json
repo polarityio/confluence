@@ -2,11 +2,11 @@
   "main": "./integration.js",
   "name": "Confluence",
   "description": "Confluence siteSearch",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "private": true,
   "dependencies": {
-    "request": ">=2.76.0",
-    "lodash": ">=4.16.6",
-    "async": ">=2.1.2"
+    "request": "~2.88.0",
+    "lodash": "~4.17.11",
+    "async": "~2.6.2"
   }
 }

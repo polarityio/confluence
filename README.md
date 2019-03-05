@@ -1,26 +1,52 @@
 # Polarity Confluence Integration
 
-The Polarity Confluence integration allows Polarity to search Confluence to return any Space, Page of Blog that is contained in confluence.
+The Polarity Confluence integration allows Polarity to search Confluence to return any Space, Attachment, Page or Blog that is contained in Confluence.
 
-![image](https://user-images.githubusercontent.com/22529325/41306906-a05121f4-6e45-11e8-8ccb-e4ab156826f6.png)
-
+![image](https://user-images.githubusercontent.com/306319/53783811-2de42180-3ee1-11e9-80b6-ff4a8b0cecd2.png)
 
 ## Confluence Integration Options
 
 ### Confluence URL
 
-URL used to access your instance of Confluence.
+Your Confluence Base Url to include the schema (i.e., https://) and port if required.
+
+For example:
+
+```
+https://mycompany.atlassian.net/wiki
+```
 
 ### Confluence UserName
 
-Username used for individual to access Confluence.
+Your Confluence account email address.
 
-### API Key
+### Confluence API Token
 
-Confluence API Key, can be generated from a users profile page in Confluence.
+Your Confluence API Token which can be generated from a users profile page in Confluence.
 
 https://id.atlassian.com/manage/api-tokens
 
+### Space Keys
+
+A comma delimited list of Confluence Space Keys to search.  If left blank, all spaces will be searched.
+
+### Confluence Space Search
+
+If checked, the integration will return Confluence space names that contain the search term
+
+### Confluence Page Search
+
+If checked, the integration will search keywords/phrases in Confluence pages
+
+### Confluence Blog Search
+
+If checked, the integration will search keywords/phrases in Confluence blogs
+
+### Confluence Attachment Search
+
+If checked, the integration will search keywords/phrases in Confluence attachments
+
+> Note: At least one of the search options must be checked.
 
 ## Installation Instructions
 

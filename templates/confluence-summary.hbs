@@ -1,20 +1,20 @@
-{{#each allSpaces as |tag|}}
-    <span class="integration-summary-tag integration-background-color integration-border-color">
-       <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
-       <span class="integration-text-color">{{tag}}</span>
-    </span>
-{{/each}}
+<span class="integration-summary-tag integration-background-color integration-border-color">
+   <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
+   <span class="integration-text-color">Spaces: {{details.space.length}}</span>
+</span>
 
-{{#each allPages as |tag|}}
-    <span class="integration-summary-tag integration-background-color integration-border-color">
-       <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
-       <span class="integration-text-color">{{tag}}</span>
-    </span>
-{{/each}}
+<span class="integration-summary-tag integration-background-color integration-border-color">
+   <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
+   <span class="integration-text-color">Pages: {{details.page.length}}</span>
+</span>
 
-{{#each allBlogs as |tag|}}
-    <span class="integration-summary-tag integration-background-color integration-border-color">
-       <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
-       <span class="integration-text-color">{{tag}}</span>
-    </span>
-{{/each}}
+<span class="integration-summary-tag integration-background-color integration-border-color">
+   <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
+   <span class="integration-text-color">Blogs: {{details.blog.length}}</span>
+</span>
+
+<span class="integration-summary-tag integration-background-color integration-border-color">
+   <span class="acronym integration-text-bold-color">{{block.acronym}}</span>
+   <span class="integration-text-color">Attachments: {{details.attachments.length}}</span>
+</span>
+

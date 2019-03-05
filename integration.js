@@ -1,9 +1,10 @@
 'use strict';
-let request = require('request');
-let _ = require('lodash');
-let async = require('async');
-let util = require('util');
-let log = null
+
+const request = require('request');
+const _ = require('lodash');
+const async = require('async');
+
+let log = null;
 
 function startup(logger) {
   log = logger;
@@ -12,45 +13,96 @@ function startup(logger) {
 function doLookup(entities, options, cb) {
   let lookupResults = [];
 
-  log.trace({
-    entity: entities
-  }, "Checking to see if data is moving");
+  log.trace(
+    {
+      entity: entities
+    },
+    'Checking to see if data is moving'
+  );
 
-  async.each(entities, function(entityObj, next) {
-    _lookupEntity(entityObj, options, function(err, result) {
-      if (err) {
-        next(err);
-      } else {
-        lookupResults.push(result);
+  async.each(
+    entities,
+    function(entityObj, next) {
+      _lookupEntity(entityObj, options, function(err, result) {
+        if (err) {
+          next(err);
+        } else {
+          lookupResults.push(result);
 
-        log.trace({
-          result: result
-        }, "Checking Results");
-        next(null);
-      }
-    });
-  }, function(err) {
-    cb(err, lookupResults);
-  });
+          log.trace(
+            {
+              result: result
+            },
+            'Checking Results'
+          );
+          next(null);
+        }
+      });
+    },
+    function(err) {
+      cb(err, lookupResults);
+    }
+  );
+}
+
+function _createQuery(entityObj, options) {
+  let types = [];
+  let keys = [];
+
+  if (options.searchAttachments) {
+    types.push('attachment');
+  }
+
+  if (options.searchBlog) {
+    types.push('blogpost');
+  }
+
+  if (options.searchPage) {
+    types.push('page');
+  }
+
+  if (options.searchSpace) {
+    types.push('space');
+  }
+
+  if(options.spaceKeys){
+    keys = options.spaceKeys.split(',').map(key => {
+      return key.trim();
+    })
+  }
+
+  let keyString = '';
+  if(keys.length > 0){
+    keyString = ` and space.key IN (${keys.join(',')}) `;
+  }
+
+  let query = `siteSearch~"${entityObj.value}" ${keyString} and type IN (${types.join(',')}) order by lastmodified desc`;
+
+  return query;
 }
 
 function _lookupEntity(entityObj, options, cb) {
-  log.trace({
-    entity: entityObj
-  }, "Checking to see if data is moving");
+  let blogData = [];
+  let attachments = [];
+  let pageData = [];
+  let spaceData = [];
 
-  let uri = options.baseUrl + "/rest/api/search?cql=siteSearch~\"" + entityObj.value + "\"";
+  let uri = `${options.baseUrl}/rest/api/search?cql=${_createQuery(entityObj, options)}`;
   let url = options.baseUrl;
-  request({
+
+  log.trace(uri, 'Search URI');
+
+  let requestOptions = {
     uri: uri,
     method: 'GET',
     auth: {
-      'username': options.userName,
-      'password': options.apiKey
+      username: options.userName,
+      password: options.apiKey
     },
     json: true
+  };
 
-  }, function(err, response, body) {
+  request(requestOptions, function(err, response, body) {
     // check for a request error
     if (err) {
       cb({
@@ -59,7 +111,6 @@ function _lookupEntity(entityObj, options, cb) {
       });
       return;
     }
-
 
     // If we get a 404 then cache a miss
     if (response.statusCode === 404) {
@@ -81,14 +132,13 @@ function _lookupEntity(entityObj, options, cb) {
     if (response.statusCode !== 200) {
       cb({
         detail: 'Unexpected HTTP Status Code Received',
+        statusCode: response.statusCode,
         debug: body
       });
       return;
     }
 
-    log.debug({body: body}, "Checking Null results for body");
-
-    if (_.isNull(body) || _.isEmpty(body.results)){
+    if (_.isNull(body) || _.isEmpty(body.results)) {
       cb(null, {
         entity: entityObj,
         data: null // setting data to null indicates to the server that this entity lookup was a "miss"
@@ -96,42 +146,46 @@ function _lookupEntity(entityObj, options, cb) {
       return;
     }
 
-    if(_.find(body.results, 'user')){
+    if (_.find(body.results, 'user')) {
       cb(null, {
         entity: entityObj,
         data: null // setting data to null indicates to the server that this entity lookup was a "miss"
       });
       return;
     }
-
 
     if (options.searchSpace) {
-      var spaceData = body.results.filter(function (item){
-        if(item != null){
-          return item.space
+      spaceData = body.results.filter(function(item) {
+        if (item != null) {
+          return item.space;
         }
       });
     }
 
     if (options.searchPage) {
-      var pageData = body.results.filter(function (item){
-        if(item.content != null){
-          return item.content.type === "page"
+      pageData = body.results.filter(function(item) {
+        if (item.content != null) {
+          return item.content.type === 'page';
         }
-
       });
     }
 
     if (options.searchBlog) {
-      var blogData = body.results.filter(function (item){
-        if(item.content != null){
-          return item.content.type === "blogpost"
+      blogData = body.results.filter(function(item) {
+        if (item.content != null) {
+          return item.content.type === 'blogpost';
         }
       });
     }
 
-
-
+    let attachments = [];
+    if (options.searchAttachments) {
+      attachments = body.results.filter(function(item) {
+        if (item.content != null) {
+          return item.content.type === 'attachment';
+        }
+      });
+    }
 
     // The lookup results returned is an array of lookup objects with the following format
     cb(null, {
@@ -146,14 +200,78 @@ function _lookupEntity(entityObj, options, cb) {
           url: url,
           space: spaceData,
           page: pageData,
-          blog: blogData
+          blog: blogData,
+          attachments: attachments,
+          totalSize: body.totalSize,
+          size: body.size
         }
       }
     });
   });
 }
 
+function validateOptions(userOptions, cb) {
+  let errors = [];
+
+  if (
+    typeof userOptions.baseUrl.value !== 'string' ||
+    (typeof userOptions.baseUrl.value === 'string' && userOptions.baseUrl.value.length === 0)
+  ) {
+    errors.push({
+      key: 'baseUrl',
+      message: 'You must provide a base URL'
+    });
+  }
+
+  if (
+    typeof userOptions.userName.value !== 'string' ||
+    (typeof userOptions.userName.value === 'string' && userOptions.userName.value.length === 0)
+  ) {
+    errors.push({
+      key: 'userName',
+      message: 'You must provide an account email address'
+    });
+  }
+
+  if (
+    typeof userOptions.apiKey.value !== 'string' ||
+    (typeof userOptions.apiKey.value === 'string' && userOptions.apiKey.value.length === 0)
+  ) {
+    errors.push({
+      key: 'apiKey',
+      message: 'You must provide an API token'
+    });
+  }
+
+  if (
+    !userOptions.searchSpace.value &&
+    !userOptions.searchPage.value &&
+    !userOptions.searchBlog.value &&
+    !userOptions.searchAttachments.value
+  ) {
+    errors.push({
+      key: 'searchSpace',
+      message: 'You must select at least one location to search out of Spaces, Pages, Blogs, and Attachments.'
+    });
+    errors.push({
+      key: 'searchPage',
+      message: 'You must select at least one location to search out of Spaces, Pages, Blogs, and Attachments.'
+    });
+    errors.push({
+      key: 'searchBlog',
+      message: 'You must select at least one location to search out of Spaces, Pages, Blogs, and Attachments.'
+    });
+    errors.push({
+      key: 'searchAttachments',
+      message: 'You must select at least one location to search out of Spaces, Pages, Blogs, and Attachments.'
+    });
+  }
+
+  cb(null, errors);
+}
+
 module.exports = {
   doLookup: doLookup,
-  startup: startup
+  startup: startup,
+  validateOptions: validateOptions
 };

@@ -1,38 +1,50 @@
-{{#if data.space}}
-  <span class = "p-value">Spaces</span>
-{{#each data.space as |space|}}
-    {{#if space.space.name}}
-    <div>
-        <span class="p-key">Space: </span>
-        <span class ="p-value"><a href ="{{data.url}}{{space.url}}"> {{space.space.name}} </a></span>
-    </div>
+<span class="p-value">Display {{data.size}} of {{data.totalSize}} results.</span>
 
-    {{/if}}
-{{/each}}
-<hr/>
+{{#if data.space}}
+    <span class = "p-title">{{fa-icon "box-open" fixedWidth=true}} Spaces</span>
+    {{#each data.space as |space|}}
+        {{#if space.space.name}}
+            <div>
+                <span class="p-key">Space: </span>
+                <span class ="p-value"><a href ="{{data.url}}{{space.url}}"> {{space.space.name}} </a></span>
+            </div>
+        {{/if}}
+    {{/each}}
 {{/if}}
 
 {{#if data.page}}
-<span class ="p-value"> Pages </span>
-{{#each data.page as |page|}}
-  {{#if page.content.title}}
-    <div>
-        <span class="p-key"> Page: </span>
-        <span class ="p-value"><a href ="{{data.url}}{{page.content._links.webui}}"> {{page.content.title}} </a></span>
-  </div>
-  {{/if}}
-{{/each}}
-<hr/>
+    <span class ="p-title">{{fa-icon "file-alt" fixedWidth=true}} Pages</span>
+    {{#each data.page as |page|}}
+      {{#if page.content.title}}
+        <div>
+            <span class="p-key"> Page: </span>
+            <span class ="p-value"><a href ="{{data.url}}{{page.content._links.webui}}"> {{page.content.title}} </a></span>
+        </div>
+      {{/if}}
+    {{/each}}
 {{/if}}
 
 {{#if data.blog}}
-<span class="p-value"> Blogs </span>
-{{#each data.blog as |blog|}}
-    {{#if blog.content.title}}
-    <div>
-        <span class="p-key">Blog: </span>
-        <span class="p-value"><a href ="{{data.url}}{{blog.content._links.webui}}"> {{blog.content.title}} </a></span>
-      </div>
-  {{/if}}
-{{/each}}
+    <span class="p-title">{{fa-icon "blog" fixedWidth=true}} Blogs</span>
+    {{#each data.blog as |blog|}}
+        {{#if blog.content.title}}
+            <div>
+                <span class="p-key">Blog: </span>
+                <span class="p-value"><a href ="{{data.url}}{{blog.content._links.webui}}"> {{blog.content.title}} </a></span>
+            </div>
+      {{/if}}
+    {{/each}}
 {{/if}}
+
+{{#if data.attachments}}
+    <span class="p-title">{{fa-icon "paperclip" fixedWidth=true}} Attachments</span>
+    {{#each data.attachments as |attachment|}}
+        {{#if attachment.content.title}}
+            <div>
+                <span class="p-key">Attachment: </span>
+                <span class="p-value"><a href ="{{data.url}}{{attachment.content._links.webui}}"> {{attachment.content.title}} </a></span>
+            </div>
+        {{/if}}
+    {{/each}}
+{{/if}}
+

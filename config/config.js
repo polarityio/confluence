@@ -95,7 +95,7 @@ module.exports = {
       name: 'Confluence API Token',
       description: 'Your Confluence API token',
       default: '',
-      type: 'text',
+      type: 'password',
       userCanEdit: true,
       adminOnly: false
     },

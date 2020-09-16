@@ -18,11 +18,6 @@ module.exports = {
 
   entityTypes: ['*'],
 
-  logging: {
-    level: 'info', //trace, debug, info, warn, error, fatal
-    fileName: 'integration.log',
-    directoryPath: 'logs'
-  },
   /**
    * Description for this integration which is displayed in the Polarity integrations user interface
    *
@@ -55,13 +50,35 @@ module.exports = {
       file: './templates/confluence-block.hbs'
     }
   },
-  summary: {
-    component: {
-      file: './components/confluence-summary.js'
-    },
-    template: {
-      file: './templates/confluence-summary.hbs'
-    }
+  
+  logging: {
+    level: 'info', //trace, debug, info, warn, error, fatal
+    fileName: 'integration.log',
+    directoryPath: 'logs'
+  },
+
+  request: {
+    // Provide the path to your certFile. Leave an empty string to ignore this option.
+    // Relative paths are relative to the integration's root directory
+    cert: '',
+    // Provide the path to your private key. Leave an empty string to ignore this option.
+    // Relative paths are relative to the integration's root directory
+    key: '',
+    // Provide the key passphrase if required.  Leave an empty string to ignore this option.
+    // Relative paths are relative to the integration's root directory
+    passphrase: '',
+    // Provide the Certificate Authority. Leave an empty string to ignore this option.
+    // Relative paths are relative to the integration's root directory
+    ca: '',
+    // An HTTP proxy to be used. Supports proxy Auth with Basic Auth, identical to support for
+    // the url parameter (by embedding the auth info in the uri)
+    proxy: '',
+    /**
+     * If set to false, the integration will ignore SSL errors.  This will allow the integration to connect
+     * to the MISP servers without valid SSL certificates.  Please note that we do NOT recommending setting this
+     * to false in a production environment.
+     */
+    rejectUnauthorized: true
   },
   /**
    * Options that are displayed to the user/admin in the Polarity integration user-interface.  Should be structured
@@ -106,6 +123,16 @@ module.exports = {
         'A comma delimited list of Confluence Space Keys to search.  If left blank, all spaces will be searched.',
       default: '',
       type: 'text',
+      userCanEdit: true,
+      adminOnly: false
+    },
+    {
+      key: 'reduceFuzziness',
+      name: 'Reduce Search Fuzziness',
+      description:
+        'If checked, the integration will return fewer results with more of an exact string match on your entities.',
+      default: true,
+      type: 'boolean',
       userCanEdit: true,
       adminOnly: false
     },

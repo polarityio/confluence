@@ -34,6 +34,10 @@ A comma delimited list of Confluence Space Keys to search.  If left blank, all s
 
 If checked, the integration will return Confluence space names that contain the search term
 
+### Reduce Search Fuzziness
+
+If checked, the integration will return fewer results with more of an exact string match on your entities.
+
 ### Confluence Page Search
 
 If checked, the integration will search keywords/phrases in Confluence pages

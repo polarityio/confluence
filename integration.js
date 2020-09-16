@@ -3,12 +3,43 @@
 const request = require('request');
 const _ = require('lodash');
 const async = require('async');
+const config = require('./config/config');
 
 let log = null;
+let requestWithDefaults;
 
 function startup(logger) {
   log = logger;
+
+  let defaults = {};
+
+  if (typeof config.request.cert === 'string' && config.request.cert.length > 0) {
+    defaults.cert = fs.readFileSync(config.request.cert);
+  }
+
+  if (typeof config.request.key === 'string' && config.request.key.length > 0) {
+    defaults.key = fs.readFileSync(config.request.key);
+  }
+
+  if (typeof config.request.passphrase === 'string' && config.request.passphrase.length > 0) {
+    defaults.passphrase = config.request.passphrase;
+  }
+
+  if (typeof config.request.ca === 'string' && config.request.ca.length > 0) {
+    defaults.ca = fs.readFileSync(config.request.ca);
+  }
+
+  if (typeof config.request.proxy === 'string' && config.request.proxy.length > 0) {
+    defaults.proxy = config.request.proxy;
+  }
+
+  if (typeof config.request.rejectUnauthorized === 'boolean') {
+    defaults.rejectUnauthorized = config.request.rejectUnauthorized;
+  }
+
+  requestWithDefaults = request.defaults(defaults);
 }
+
 
 function doLookup(entities, options, cb) {
   let lookupResults = [];
@@ -76,7 +107,9 @@ function _createQuery(entityObj, options) {
     keyString = ` and space.key IN (${keys.join(',')}) `;
   }
 
-  let query = `siteSearch~"${entityObj.value}" ${keyString} and type IN (${types.join(',')}) order by lastmodified desc`;
+  let query = `text~'"${entityObj.value}"${
+    options.reduceFuzziness ? '~-0.5' : ''
+  }' ${keyString} and type IN (${types.join(',')}) order by lastmodified desc`;
 
   return query;
 }
@@ -102,7 +135,7 @@ function _lookupEntity(entityObj, options, cb) {
     json: true
   };
 
-  request(requestOptions, function(err, response, body) {
+  requestWithDefaults(requestOptions, function (err, response, body) {
     // check for a request error
     if (err) {
       cb({
@@ -155,7 +188,7 @@ function _lookupEntity(entityObj, options, cb) {
     }
 
     if (options.searchSpace) {
-      spaceData = body.results.filter(function(item) {
+      spaceData = body.results.filter(function (item) {
         if (item != null) {
           return item.space;
         }
@@ -163,7 +196,7 @@ function _lookupEntity(entityObj, options, cb) {
     }
 
     if (options.searchPage) {
-      pageData = body.results.filter(function(item) {
+      pageData = body.results.filter(function (item) {
         if (item.content != null) {
           return item.content.type === 'page';
         }
@@ -171,7 +204,7 @@ function _lookupEntity(entityObj, options, cb) {
     }
 
     if (options.searchBlog) {
-      blogData = body.results.filter(function(item) {
+      blogData = body.results.filter(function (item) {
         if (item.content != null) {
           return item.content.type === 'blogpost';
         }
@@ -180,7 +213,7 @@ function _lookupEntity(entityObj, options, cb) {
 
     let attachments = [];
     if (options.searchAttachments) {
-      attachments = body.results.filter(function(item) {
+      attachments = body.results.filter(function (item) {
         if (item.content != null) {
           return item.content.type === 'attachment';
         }
@@ -194,7 +227,12 @@ function _lookupEntity(entityObj, options, cb) {
       // Required: An object containing everything you want passed to the template
       data: {
         // Required: These are the tags that are displayed in your template
-        summary: [],
+        summary: [
+          `Spaces: ${spaceData.length}`,
+          `Pages: ${pageData.length}`,
+          `Blogs: ${blogData.length}`,
+          `Attachments: ${attachments.length}`
+        ],
         // Data that you want to pass back to the notification window details block
         details: {
           url: url,

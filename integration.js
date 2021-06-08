@@ -122,14 +122,13 @@ function _lookupEntity(entityObj, options, cb) {
 
   let uri = `${options.baseUrl}/rest/api/search`;
   let url = options.baseUrl;
-
-  log.trace(uri, 'Search URI');
+  const cql = _createQuery(entityObj, options)
 
   let requestOptions = {
     uri: uri,
     method: 'GET',
     qs: {
-      cql: _createQuery(entityObj, options)
+      cql
     },
     auth: {
       username: options.userName,
@@ -137,6 +136,8 @@ function _lookupEntity(entityObj, options, cb) {
     },
     json: true
   };
+
+  log.trace({ cql }, 'CQL Request Parameter');
 
   requestWithDefaults(requestOptions, function (err, response, body) {
     // check for a request error
@@ -214,7 +215,6 @@ function _lookupEntity(entityObj, options, cb) {
       });
     }
 
-    let attachments = [];
     if (options.searchAttachments) {
       attachments = body.results.filter(function (item) {
         if (item.content != null) {

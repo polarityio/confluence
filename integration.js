@@ -120,7 +120,7 @@ function _lookupEntity(entityObj, options, cb) {
   let pageData = [];
   let spaceData = [];
 
-  let uri = `${options.baseUrl}/rest/api/search?cql=${_createQuery(entityObj, options)}`;
+  let uri = `${options.baseUrl}/rest/api/search`;
   let url = options.baseUrl;
 
   log.trace(uri, 'Search URI');
@@ -128,6 +128,9 @@ function _lookupEntity(entityObj, options, cb) {
   let requestOptions = {
     uri: uri,
     method: 'GET',
+    qs: {
+      cql: _createQuery(entityObj, options)
+    },
     auth: {
       username: options.userName,
       password: options.apiKey

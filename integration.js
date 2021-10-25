@@ -1,12 +1,13 @@
 'use strict';
 
 const request = require('request');
-const _ = require('lodash');
+const fp = require('lodash/fp');
 const async = require('async');
 const config = require('./config/config');
 
 let log = null;
 let requestWithDefaults;
+const MAX_PARALLEL_LOOKUPS = 5;
 
 function startup(logger) {
   log = logger;
@@ -40,40 +41,30 @@ function startup(logger) {
   requestWithDefaults = request.defaults(defaults);
 }
 
-
 function doLookup(entities, options, cb) {
-  let lookupResults = [];
+  log.trace({ entities }, 'Checking to see if data is moving');
 
-  log.trace(
-    {
-      entity: entities
-    },
-    'Checking to see if data is moving'
-  );
-
-  async.each(
-    entities,
-    function(entityObj, next) {
-      _lookupEntity(entityObj, options, function(err, result) {
+  const tasks = fp.map(
+    (entityObj) => (next) =>
+      _lookupEntity(entityObj, options, function (err, result) {
         if (err) {
           next(err);
         } else {
-          lookupResults.push(result);
-
-          log.trace(
-            {
-              result: result
-            },
-            'Checking Results'
-          );
-          next(null);
+          log.trace({ result }, 'Checking Results');
+          next(null, result);
         }
-      });
-    },
-    function(err) {
-      cb(err, lookupResults);
-    }
+      }),
+    entities
   );
+
+  async.parallelLimit(tasks, MAX_PARALLEL_LOOKUPS, (err, lookupResults) => {
+    if (err) {
+      log.error(err, 'Error running lookup');
+      return cb(err);
+    }
+
+    cb(null, lookupResults);
+  });
 }
 
 function _createQuery(entityObj, options) {
@@ -96,14 +87,12 @@ function _createQuery(entityObj, options) {
     types.push('space');
   }
 
-  if(options.spaceKeys){
-    keys = options.spaceKeys.split(',').map(key => {
-      return key.trim();
-    })
+  if (options.spaceKeys) {
+    keys = fp.flow(fp.get('spaceKeys'), fp.split(','), fp.map(fp.trim))(options);
   }
 
   let keyString = '';
-  if(keys.length > 0){
+  if (keys.length > 0) {
     keyString = ` and space.key IN (${keys.join(',')}) `;
   }
 
@@ -122,7 +111,7 @@ function _lookupEntity(entityObj, options, cb) {
 
   let uri = `${options.baseUrl}/rest/api/search`;
   let url = options.baseUrl;
-  const cql = _createQuery(entityObj, options)
+  const cql = _createQuery(entityObj, options);
 
   let requestOptions = {
     uri: uri,
@@ -175,7 +164,7 @@ function _lookupEntity(entityObj, options, cb) {
       return;
     }
 
-    if (_.isNull(body) || _.isEmpty(body.results)) {
+    if (fp.isNull(body) || fp.isEmpty(body.results)) {
       cb(null, {
         entity: entityObj,
         data: null // setting data to null indicates to the server that this entity lookup was a "miss"
@@ -183,7 +172,7 @@ function _lookupEntity(entityObj, options, cb) {
       return;
     }
 
-    if (_.find(body.results, 'user')) {
+    if (fp.find('user', body.results)) {
       cb(null, {
         entity: entityObj,
         data: null // setting data to null indicates to the server that this entity lookup was a "miss"

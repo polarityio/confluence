@@ -59,7 +59,7 @@ function doLookup(entities, options, cb) {
 
   async.parallelLimit(tasks, MAX_PARALLEL_LOOKUPS, (err, lookupResults) => {
     if (err) {
-      Logger.error(err, 'Error running lookup');
+      log.error(err, 'Error running lookup');
       return cb(err);
     }
 

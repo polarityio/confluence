@@ -17,7 +17,13 @@ module.exports = {
   acronym: 'CONF',
 
   entityTypes: ['*'],
-
+  customTypes: [
+    // {
+    //   key: 'possiblyDefangedUrl',
+    //   regex:
+    //     /(?:[a-zA-Z]+(?:\[(?!\])|(?<!\[)\]|:|\/{2}){1,5}(?:(?<!\[)\]|\/{2}))?(?:(?:\w+(?:\[(?!\])|(?<!\[)\]|\.){1,3})+\w+)(?:\/(?:\w+|\-|(?:\[(?!\])|(?<!\[)\]|\.){1,3})+)*(?:\/?\??(?:\w+\=(?:\w|\/)+\&?))*/
+    // }
+  ],
   /**
    * Description for this integration which is displayed in the Polarity integrations user interface
    *
@@ -50,7 +56,7 @@ module.exports = {
       file: './templates/confluence-block.hbs'
     }
   },
-  
+
   logging: {
     level: 'info', //trace, debug, info, warn, error, fatal
     fileName: 'integration.log',

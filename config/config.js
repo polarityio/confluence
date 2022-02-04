@@ -15,15 +15,6 @@ module.exports = {
    * @required
    */
   acronym: 'CONF',
-
-  entityTypes: ['*'],
-  customTypes: [
-    // {
-    //   key: 'possiblyDefangedUrl',
-    //   regex:
-    //     /(?:[a-zA-Z]+(?:\[(?!\])|(?<!\[)\]|:|\/{2}){1,5}(?:(?<!\[)\]|\/{2}))?(?:(?:\w+(?:\[(?!\])|(?<!\[)\]|\.){1,3})+\w+)(?:\/(?:\w+|\-|(?:\[(?!\])|(?<!\[)\]|\.){1,3})+)*(?:\/?\??(?:\w+\=(?:\w|\/)+\&?))*/
-    // }
-  ],
   /**
    * Description for this integration which is displayed in the Polarity integrations user interface
    *
@@ -31,7 +22,15 @@ module.exports = {
    * @optional
    */
   description: 'Lookup Confluence pages by keywords or phrases',
-
+  entityTypes: ['*'],
+  customTypes: [
+    {
+      key: 'possiblyDefangedUrl',
+      regex:
+        /(?:\w+(?:(?:\[:\]\/\/)|(?::\/\/)|(?:\[:\/\/\])))?(?:\w+\.|(?:\w+\[\.\]))+\w+(?:\/(?:[\/=\.\[\]\w&#@$%?-])*)?/
+    }
+  ],
+  defaultColor: 'light-gray',
   /**
    * An array of style files (css or less) that will be included for your integration. Any styles specified in
    * the below files can be used in your custom template.

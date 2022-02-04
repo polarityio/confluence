@@ -96,8 +96,10 @@ function _createQuery(entityObj, options) {
     keyString = ` and space.key IN (${keys.join(',')}) `;
   }
 
-  let query = `text~'"${entityObj.value}"${
-    options.reduceFuzziness ? '~-0.5' : ''
+  let query = `text~'${
+    !options.reduceFuzziness
+      ? fp.flow(fp.split(/[^\w]/g), fp.compact, fp.join(' '))(entityObj.value)
+      : `"${entityObj.value}"~-0.5`
   }' ${keyString} and type IN (${types.join(',')}) order by lastmodified desc`;
 
   return query;
@@ -114,7 +116,7 @@ function _lookupEntity(entityObj, options, cb) {
   const cql = _createQuery(entityObj, options);
 
   let requestOptions = {
-    uri: uri,
+    uri,
     method: 'GET',
     qs: {
       cql

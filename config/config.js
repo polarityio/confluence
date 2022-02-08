@@ -15,9 +15,6 @@ module.exports = {
    * @required
    */
   acronym: 'CONF',
-
-  entityTypes: ['*'],
-
   /**
    * Description for this integration which is displayed in the Polarity integrations user interface
    *
@@ -25,7 +22,15 @@ module.exports = {
    * @optional
    */
   description: 'Lookup Confluence pages by keywords or phrases',
-
+  entityTypes: ['*'],
+  // customTypes: [
+  //   {
+  //     key: 'possiblyDefangedUrl',
+  //     regex:
+  //       /(?:\w+(?:(?:\[:\]\/\/)|(?::\/\/)|(?:\[:\/\/\])))?(?:\w+\.|(?:\w+\[\.\]))+\w+(?:\/(?:[\/=\.\[\]\w&#@$%?-])*)?/
+  //   }
+  // ],
+  defaultColor: 'light-gray',
   /**
    * An array of style files (css or less) that will be included for your integration. Any styles specified in
    * the below files can be used in your custom template.
@@ -50,7 +55,7 @@ module.exports = {
       file: './templates/confluence-block.hbs'
     }
   },
-  
+
   logging: {
     level: 'info', //trace, debug, info, warn, error, fatal
     fileName: 'integration.log',

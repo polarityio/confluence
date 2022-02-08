@@ -23,13 +23,13 @@ module.exports = {
    */
   description: 'Lookup Confluence pages by keywords or phrases',
   entityTypes: ['*'],
-  customTypes: [
-    {
-      key: 'possiblyDefangedUrl',
-      regex:
-        /(?:\w+(?:(?:\[:\]\/\/)|(?::\/\/)|(?:\[:\/\/\])))?(?:\w+\.|(?:\w+\[\.\]))+\w+(?:\/(?:[\/=\.\[\]\w&#@$%?-])*)?/
-    }
-  ],
+  // customTypes: [
+  //   {
+  //     key: 'possiblyDefangedUrl',
+  //     regex:
+  //       /(?:\w+(?:(?:\[:\]\/\/)|(?::\/\/)|(?:\[:\/\/\])))?(?:\w+\.|(?:\w+\[\.\]))+\w+(?:\/(?:[\/=\.\[\]\w&#@$%?-])*)?/
+  //   }
+  // ],
   defaultColor: 'light-gray',
   /**
    * An array of style files (css or less) that will be included for your integration. Any styles specified in

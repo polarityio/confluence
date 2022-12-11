@@ -2,7 +2,7 @@
 
 The Polarity Confluence integration allows Polarity to search Confluence to return any Space, Attachment, Page or Blog that is contained in Confluence.
 
-![image](https://user-images.githubusercontent.com/306319/53783811-2de42180-3ee1-11e9-80b6-ff4a8b0cecd2.png)
+<img src="images/overlay.png" width="50%">
 
 ## Confluence Integration Options
 
@@ -16,23 +16,27 @@ For example:
 https://mycompany.atlassian.net/wiki
 ```
 
-### Confluence UserName
+### Confluence Version
 
-Your Confluence account email address.
+Select the version of Confluence you are authenticating to.
+
+> The Confluence integration supports authenticating to Confluence Cloud as well as Confluence Server v7.9 and up
+
+### Confluence Account Email
+
+Your Confluence account email address (only required for Confluence Cloud).
 
 ### Confluence API Token
 
-Your Confluence API Token which can be generated from a users profile page in Confluence.
+Your Confluence API token (required for both Confluence Server and Confluence Cloud).  
+
+The Confluence API Token can be generated from a users profile page in Confluence.
 
 https://id.atlassian.com/manage/api-tokens
 
 ### Space Keys
 
 A comma delimited list of Confluence Space Keys to search.  If left blank, all spaces will be searched.
-
-### Confluence Space Search
-
-If checked, the integration will return Confluence space names that contain the search term
 
 ### Reduce Search Fuzziness
 
@@ -42,13 +46,17 @@ If checked, the integration will return fewer results with more of an exact stri
 
 If checked, the integration will search keywords/phrases in Confluence pages
 
+### Confluence Attachment Search
+
+If checked, the integration will search keywords/phrases in Confluence attachments
+
 ### Confluence Blog Search
 
 If checked, the integration will search keywords/phrases in Confluence blogs
 
-### Confluence Attachment Search
+### Confluence Space Search
 
-If checked, the integration will search keywords/phrases in Confluence attachments
+If checked, the integration will return Confluence space names that contain the search term
 
 > Note: At least one of the search options must be checked.
 

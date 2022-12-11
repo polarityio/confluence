@@ -58,8 +58,6 @@ module.exports = {
 
   logging: {
     level: 'info', //trace, debug, info, warn, error, fatal
-    fileName: 'integration.log',
-    directoryPath: 'logs'
   },
 
   request: {
@@ -104,9 +102,32 @@ module.exports = {
       adminOnly: false
     },
     {
+      key: 'confluenceType',
+      name: 'Confluence Version',
+      description: 'Select the version of Confluence you are authenticating to.',
+      default: {
+        value: 'cloud',
+        display: 'Cloud'
+      },
+      options: [
+        {
+          value: 'cloud',
+          display: 'Confluence Cloud'
+        },
+        {
+          value: 'server',
+          display: 'Confluence Server v7.9+'
+        }
+      ],
+      multiple: false,
+      type: 'select',
+      userCanEdit: false,
+      adminOnly: true
+    },
+    {
       key: 'userName',
       name: 'Confluence Account Email',
-      description: 'Your Confluence account email address',
+      description: 'Your Confluence account email address (only required for Confluence Cloud).',
       default: '',
       type: 'text',
       userCanEdit: true,
@@ -115,7 +136,7 @@ module.exports = {
     {
       key: 'apiKey',
       name: 'Confluence API Token',
-      description: 'Your Confluence API token',
+      description: 'Your Confluence API token (required for both Confluence Server and Confluence Cloud)',
       default: '',
       type: 'password',
       userCanEdit: true,
@@ -142,18 +163,18 @@ module.exports = {
       adminOnly: false
     },
     {
-      key: 'searchSpace',
-      name: 'Confluence Space Search',
-      description: 'If checked, the integration will return Confluence space names that contain the search term',
+      key: 'searchPage',
+      name: 'Confluence Page Search',
+      description: 'If checked, the integration will search keywords/phrases in Confluence pages',
       default: true,
       type: 'boolean',
       userCanEdit: true,
       adminOnly: false
     },
     {
-      key: 'searchPage',
-      name: 'Confluence Page Search',
-      description: 'If checked, the integration will search keywords/phrases in Confluence pages',
+      key: 'searchAttachments',
+      name: 'Confluence Attachment Search',
+      description: 'If checked, the integration will search keywords/phrases in Confluence attachments',
       default: true,
       type: 'boolean',
       userCanEdit: true,
@@ -169,9 +190,9 @@ module.exports = {
       adminOnly: false
     },
     {
-      key: 'searchAttachments',
-      name: 'Confluence Attachment Search',
-      description: 'If checked, the integration will search keywords/phrases in Confluence attachments',
+      key: 'searchSpace',
+      name: 'Confluence Space Search',
+      description: 'If checked, the integration will return Confluence space names that contain the search term',
       default: true,
       type: 'boolean',
       userCanEdit: true,

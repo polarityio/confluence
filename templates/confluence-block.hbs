@@ -1,50 +1,80 @@
-<span class="p-value">Display {{data.size}} of {{data.totalSize}} results.</span>
+<div>
+  <a href="{{data.searchLink}}">Run search in Confluence {{fa-icon icon="external-link-square" fixedWidth=true class="external-link-icon"}}</a>
+</div>
+
+<div class="p-footnote mt-1">
+  {{#if (eq data.size data.totalSize)}}
+    Showing all {{data.totalSize}} results from {{data.searchTypesString}}.
+  {{else}}
+    Showing most recent {{data.size}} of {{data.totalSize}} results from {{data.searchTypesString}}.
+  {{/if}}
+</div>
 
 {{#if data.space}}
-    <span class = "p-title">{{fa-icon "box-open" fixedWidth=true}} Spaces</span>
+  <span class="p-title">{{fa-icon "box-open" fixedWidth=true}} Spaces ({{data.space.length}})</span>
+  <div class="results-container">
     {{#each data.space as |space|}}
-        {{#if space.space.name}}
-            <div>
-                <span class="p-key">Space: </span>
-                <span class ="p-value"><a href ="{{data.url}}{{space.url}}"> {{space.space.name}} </a></span>
-            </div>
-        {{/if}}
-    {{/each}}
-{{/if}}
-
-{{#if data.page}}
-    <span class ="p-title">{{fa-icon "file-alt" fixedWidth=true}} Pages</span>
-    {{#each data.page as |page|}}
-      {{#if page.content.title}}
-        <div>
-            <span class="p-key"> Page: </span>
-            <span class ="p-value"><a href ="{{data.url}}{{page.content._links.webui}}"> {{page.content.title}} </a></span>
+      {{#if space.space.name}}
+        <div class="result-container">
+          <div class="p-value p-block"><a href ="{{data.url}}{{space.url}}"> {{space.space.name}} </a></div>
+          <div class="d-flex align-items-center justify-content-between meta-data">
+            <div class="p-footnote">{{space.resultGlobalContainer.title}}</div>
+            <div class="p-footnote">Updated: {{moment-format space.lastModified "YYYY-MM-DD" timeZone=timezone}}</div>
+          </div>
         </div>
       {{/if}}
     {{/each}}
+  </div>
+{{/if}}
+
+{{#if data.page}}
+  <span class ="p-title">{{fa-icon "file-alt" fixedWidth=true}} Pages ({{data.page.length}})</span>
+  <div class="results-container">
+    {{#each data.page as |page|}}
+      {{#if page.content.title}}
+        <div class="result-container">
+          <div class="p-value p-block"><a href ="{{data.url}}{{page.content._links.webui}}"> {{page.content.title}} </a></div>
+          <div class="d-flex align-items-center justify-content-between meta-data">
+            <div class="p-footnote">{{page.resultGlobalContainer.title}}</div>
+            <div class="p-footnote">Updated: {{moment-format page.lastModified "YYYY-MM-DD" timeZone=timezone}}</div>
+          </div>
+        </div>
+      {{/if}}
+    {{/each}}
+  </div>
 {{/if}}
 
 {{#if data.blog}}
-    <span class="p-title">{{fa-icon "blog" fixedWidth=true}} Blogs</span>
-    {{#each data.blog as |blog|}}
-        {{#if blog.content.title}}
-            <div>
-                <span class="p-key">Blog: </span>
-                <span class="p-value"><a href ="{{data.url}}{{blog.content._links.webui}}"> {{blog.content.title}} </a></span>
-            </div>
-      {{/if}}
-    {{/each}}
+  <span class="p-title">{{fa-icon "blog" fixedWidth=true}} Blogs ({{data.blog.length}})</span>
+  <div class="results-container">
+  {{#each data.blog as |blog|}}
+    {{#if blog.content.title}}
+      <div class="result-container">
+        <div class="p-value p-block"><a href ="{{data.url}}{{blog.content._links.webui}}"> {{blog.content.title}} </a></div>
+        <div class="d-flex align-items-center justify-content-between meta-data">
+          <div class="p-footnote">{{blog.resultGlobalContainer.title}}</div>
+          <div class="p-footnote">Updated: {{moment-format blog.lastModified "YYYY-MM-DD" timeZone=timezone}}</div>
+        </div>
+      </div>
+    {{/if}}
+  {{/each}}
+  </div>
 {{/if}}
 
 {{#if data.attachments}}
-    <span class="p-title">{{fa-icon "paperclip" fixedWidth=true}} Attachments</span>
-    {{#each data.attachments as |attachment|}}
-        {{#if attachment.content.title}}
-            <div>
-                <span class="p-key">Attachment: </span>
-                <span class="p-value"><a href ="{{data.url}}{{attachment.content._links.webui}}"> {{attachment.content.title}} </a></span>
-            </div>
-        {{/if}}
-    {{/each}}
+  <span class="p-title">{{fa-icon "paperclip" fixedWidth=true}} Attachments ({{data.attachments.length}})</span>
+  <div class="results-container">
+  {{#each data.attachments as |attachment|}}
+    {{#if attachment.content.title}}
+      <div class="result-container">
+        <div class="p-value"><a href ="{{data.url}}{{attachment.content._links.webui}}"> {{attachment.content.title}}</a></div>
+        <div class="d-flex align-items-center justify-content-between meta-data">
+          <div class="p-footnote">{{attachment.resultGlobalContainer.title}}</div>
+          <div class="p-footnote">Updated: {{moment-format attachment.lastModified "YYYY-MM-DD" timeZone=timezone}}</div>
+        </div>
+      </div>
+    {{/if}}
+  {{/each}}
+  </div>
 {{/if}}
 

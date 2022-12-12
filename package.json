@@ -1,12 +1,11 @@
 {
   "main": "./integration.js",
   "name": "Confluence",
-  "description": "Confluence siteSearch",
-  "version": "3.1.8",
+  "version": "3.2.0",
   "private": true,
   "dependencies": {
-    "async": "~3.2.1",
-    "lodash": "~4.17.21",
-    "request": "~2.88.2"
+    "async": "^3.2.4",
+    "lodash": "^4.17.21",
+    "postman-request": "^2.88.1-postman.31"
   }
 }

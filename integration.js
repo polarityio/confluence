@@ -1,9 +1,10 @@
 'use strict';
 
-const request = require('request');
+const request = require('postman-request');
 const fp = require('lodash/fp');
 const async = require('async');
 const config = require('./config/config');
+const fs = require('fs');
 
 let log = null;
 let requestWithDefaults;
@@ -111,6 +112,7 @@ function _lookupEntity(entityObj, options, cb) {
   let pageData = [];
   let spaceData = [];
 
+  options.baseUrl = options.baseUrl.endsWith('/') ? options.baseUrl.slice(0, -1) : options.baseUrl;
   let uri = `${options.baseUrl}/rest/api/search`;
   let url = options.baseUrl;
   const cql = _createQuery(entityObj, options);
@@ -121,12 +123,19 @@ function _lookupEntity(entityObj, options, cb) {
     qs: {
       cql
     },
-    auth: {
-      username: options.userName,
-      password: options.apiKey
-    },
     json: true
   };
+
+  if (options.confluenceType.value === 'cloud') {
+    requestOptions.auth = {
+      username: options.userName,
+      password: options.apiKey
+    };
+  } else {
+    requestOptions.headers = {
+      Authorization: `Bearer ${options.apiKey}`
+    };
+  }
 
   log.trace({ cql }, 'CQL Request Parameter');
 
@@ -221,12 +230,7 @@ function _lookupEntity(entityObj, options, cb) {
       // Required: An object containing everything you want passed to the template
       data: {
         // Required: These are the tags that are displayed in your template
-        summary: [
-          `Spaces: ${spaceData.length}`,
-          `Pages: ${pageData.length}`,
-          `Blogs: ${blogData.length}`,
-          `Attachments: ${attachments.length}`
-        ],
+        summary: getSummaryTags(spaceData, pageData, blogData, attachments, options),
         // Data that you want to pass back to the notification window details block
         details: {
           url: url,
@@ -235,16 +239,69 @@ function _lookupEntity(entityObj, options, cb) {
           blog: blogData,
           attachments: attachments,
           totalSize: body.totalSize,
-          size: body.size
+          size: body.size,
+          searchLink: `${options.baseUrl}/search?text=${cql}`,
+          searchTypesString: getSearchTypesString(options)
         }
       }
     });
   });
 }
 
+function getSearchTypesString(options) {
+  const types = [];
+  if (options.searchPage) {
+    types.push('pages');
+  }
+
+  if (options.searchBlog) {
+    types.push('blogs');
+  }
+
+  if (options.searchAttachments) {
+    types.push('attachments');
+  }
+
+  if (options.searchSpace) {
+    types.push('spaces');
+  }
+
+  if (types.length > 1) {
+    const front = types.slice(0, types.length - 1);
+    const end = types[types.length-1];
+    front.push(`and ${end}`);
+    return front.join(', ');
+  } else {
+    // Only one type
+    return types[0];
+  }
+}
+
+function getSummaryTags(spaceData, pageData, blogData, attachments, options) {
+  const tags = [];
+
+  if (options.searchPage) {
+    tags.push(`Pages: ${pageData.length}`);
+  }
+
+  if (options.searchBlog) {
+    tags.push(`Blogs: ${blogData.length}`);
+  }
+
+  if (options.searchAttachments) {
+    tags.push(`Attachments: ${attachments.length}`);
+  }
+
+  if (options.searchSpace) {
+    tags.push(`Spaces: ${spaceData.length}`);
+  }
+
+  return tags;
+}
+
 function validateOptions(userOptions, cb) {
   let errors = [];
-
+  log.info({ userOptions }, 'validateOptions');
   if (
     typeof userOptions.baseUrl.value !== 'string' ||
     (typeof userOptions.baseUrl.value === 'string' && userOptions.baseUrl.value.length === 0)
@@ -256,12 +313,24 @@ function validateOptions(userOptions, cb) {
   }
 
   if (
-    typeof userOptions.userName.value !== 'string' ||
-    (typeof userOptions.userName.value === 'string' && userOptions.userName.value.length === 0)
+    userOptions.confluenceType.value.value === 'cloud' &&
+    typeof userOptions.userName.value === 'string' &&
+    userOptions.userName.value.length === 0
   ) {
     errors.push({
       key: 'userName',
-      message: 'You must provide an account email address'
+      message: 'You must provide an account email address for Confluence Cloud authentication'
+    });
+  }
+
+  if (
+    userOptions.confluenceType.value.value === 'server' &&
+    typeof userOptions.userName.value === 'string' &&
+    userOptions.userName.value.length > 0
+  ) {
+    errors.push({
+      key: 'userName',
+      message: 'Account Email should not be provided for Confluence Server authentication.  Only enter an API Token.'
     });
   }
 

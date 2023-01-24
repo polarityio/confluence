@@ -1,0 +1,137 @@
+{
+  "name": "Confluence",
+  "acronym": "CONF",
+  "description": "Lookup Confluence pages by keywords or phrases",
+  "entityTypes": [
+    "*"
+  ],
+  "defaultColor": "light-gray",
+  "styles": [
+    "./styles/confluence.less"
+  ],
+  "block": {
+    "component": {
+      "file": "./components/confluence-block.js"
+    },
+    "template": {
+      "file": "./templates/confluence-block.hbs"
+    }
+  },
+  "logging": {
+    "level": "info"
+  },
+  "request": {
+    "cert": "",
+    "key": "",
+    "passphrase": "",
+    "ca": "",
+    "proxy": "",
+    "rejectUnauthorized": true
+  },
+  "options": [
+    {
+      "key": "baseUrl",
+      "name": "Confluence Base Url",
+      "description": "Your Confluence Base Url to include the schema (i.e., https://) and port if required. Example \"https://mycompany.atlassian.net/wiki\".",
+      "default": "",
+      "type": "text",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "confluenceType",
+      "name": "Confluence Version",
+      "description": "Select the version of Confluence you are authenticating to.",
+      "default": {
+        "value": "cloud",
+        "display": "Cloud"
+      },
+      "options": [
+        {
+          "value": "cloud",
+          "display": "Confluence Cloud"
+        },
+        {
+          "value": "server",
+          "display": "Confluence Server v7.9+"
+        }
+      ],
+      "multiple": false,
+      "type": "select",
+      "userCanEdit": false,
+      "adminOnly": true
+    },
+    {
+      "key": "userName",
+      "name": "Confluence Account Email",
+      "description": "Your Confluence account email address (only required for Confluence Cloud).",
+      "default": "",
+      "type": "text",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "apiKey",
+      "name": "Confluence API Token",
+      "description": "Your Confluence API token (required for both Confluence Server and Confluence Cloud)",
+      "default": "",
+      "type": "password",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "spaceKeys",
+      "name": "Space Keys",
+      "description": "A comma delimited list of Confluence Space Keys to search.  If left blank, all spaces will be searched.",
+      "default": "",
+      "type": "text",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "reduceFuzziness",
+      "name": "Reduce Search Fuzziness",
+      "description": "If checked, the integration will return fewer results with more of an exact string match on your entities.",
+      "default": true,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "searchPage",
+      "name": "Confluence Page Search",
+      "description": "If checked, the integration will search keywords/phrases in Confluence pages",
+      "default": true,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "searchAttachments",
+      "name": "Confluence Attachment Search",
+      "description": "If checked, the integration will search keywords/phrases in Confluence attachments",
+      "default": true,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "searchBlog",
+      "name": "Confluence Blog Search",
+      "description": "If checked, the integration will search keywords/phrases in Confluence blogs",
+      "default": true,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "searchSpace",
+      "name": "Confluence Space Search",
+      "description": "If checked, the integration will return Confluence space names that contain the search term",
+      "default": true,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
+    }
+  ]
+}

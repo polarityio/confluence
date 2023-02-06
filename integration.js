@@ -10,7 +10,7 @@ let log = null;
 let requestWithDefaults;
 const MAX_PARALLEL_LOOKUPS = 5;
 
-function startup(logger) {
+function startup (logger) {
   log = logger;
 
   let defaults = {};
@@ -42,7 +42,7 @@ function startup(logger) {
   requestWithDefaults = request.defaults(defaults);
 }
 
-function doLookup(entities, options, cb) {
+function doLookup (entities, options, cb) {
   log.trace({ entities }, 'Checking to see if data is moving');
 
   const tasks = fp.map(
@@ -64,11 +64,12 @@ function doLookup(entities, options, cb) {
       return cb(err);
     }
 
+    log.trace({ lookupResults }, 'Lookup Results');
     cb(null, lookupResults);
   });
 }
 
-function _createQuery(entityObj, options) {
+function _createQuery (entityObj, options) {
   let types = [];
   let keys = [];
 
@@ -106,13 +107,53 @@ function _createQuery(entityObj, options) {
   return query;
 }
 
-function _lookupEntity(entityObj, options, cb) {
+const handleRestError = (response, options, requestOptions, error) => {
+  if (error) {
+    return error;
+  }
+
+  const sanitizedOptions = sanitizeOptions(requestOptions);
+
+  if (response.statusCode === 401) {
+    return {
+      baseUrl: `${options.baseUrl}`,
+      detail: 'Authentication Error, check your API Key Or your Confluence API URL.',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
+
+  if (response.statusCode === 404) {
+    return {
+      baseUrl: `${options.baseUrl}`,
+      detail: 'Not Found, Check your Confluence API URL.',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
+
+  if (response.statusCode === 500) {
+    return {
+      baseUrl: `${options.baseUrl}`,
+      detail: 'Network Error',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
+};
+
+const sanitizeOptions = (options) => {
+  options.auth.password = '********';
+  return options;
+};
+
+function _lookupEntity (entityObj, options, cb) {
   let blogData = [];
   let attachments = [];
   let pageData = [];
   let spaceData = [];
 
-  options.baseUrl = options.baseUrl.endsWith('/') ? options.baseUrl.slice(0, -1) : options.baseUrl;
+  options.baseUrl = options.baseUrl.endsWith('/') ? options.baseUrl.slice(0, -1) : options.baseUrl; //does with work?
   let uri = `${options.baseUrl}/rest/api/search`;
   let url = options.baseUrl;
   const cql = _createQuery(entityObj, options);
@@ -139,23 +180,11 @@ function _lookupEntity(entityObj, options, cb) {
 
   log.trace({ cql }, 'CQL Request Parameter');
 
-  requestWithDefaults(requestOptions, function (err, response, body) {
-    // check for a request error
-    if (err) {
-      cb({
-        detail: 'Error Making HTTP Request',
-        debug: err
-      });
-      return;
-    }
+  requestWithDefaults(requestOptions, function (error, response, body) {
+    const restErr = handleRestError(response, options, requestOptions, error);
 
-    // If we get a 404 then cache a miss
-    if (response.statusCode === 404) {
-      cb(null, {
-        entity: entityObj,
-        data: null // setting data to null indicates to the server that this entity lookup was a "miss"
-      });
-      return;
+    if (restErr) {
+      return cb(restErr);
     }
 
     if (response.statusCode === 400) {
@@ -166,6 +195,7 @@ function _lookupEntity(entityObj, options, cb) {
       return;
     }
 
+    // 200
     if (response.statusCode !== 200) {
       cb({
         detail: 'Unexpected HTTP Status Code Received',
@@ -248,7 +278,7 @@ function _lookupEntity(entityObj, options, cb) {
   });
 }
 
-function getSearchTypesString(options) {
+function getSearchTypesString (options) {
   const types = [];
   if (options.searchPage) {
     types.push('pages');
@@ -268,7 +298,7 @@ function getSearchTypesString(options) {
 
   if (types.length > 1) {
     const front = types.slice(0, types.length - 1);
-    const end = types[types.length-1];
+    const end = types[types.length - 1];
     front.push(`and ${end}`);
     return front.join(', ');
   } else {
@@ -277,7 +307,7 @@ function getSearchTypesString(options) {
   }
 }
 
-function getSummaryTags(spaceData, pageData, blogData, attachments, options) {
+function getSummaryTags (spaceData, pageData, blogData, attachments, options) {
   const tags = [];
 
   if (options.searchPage) {
@@ -299,7 +329,7 @@ function getSummaryTags(spaceData, pageData, blogData, attachments, options) {
   return tags;
 }
 
-function validateOptions(userOptions, cb) {
+function validateOptions (userOptions, cb) {
   let errors = [];
   log.info({ userOptions }, 'validateOptions');
   if (

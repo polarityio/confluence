@@ -116,7 +116,7 @@ const handleRestError = (response, options, requestOptions, error) => {
 
   if (response.statusCode === 401) {
     return {
-      baseUrl: `${options.baseUrl}`,
+      baseUrl: options.baseUrl,
       detail: 'Authentication Error, check your API Key Or your Confluence API URL.',
       statusCode: response.statusCode,
       requestOptions: sanitizedOptions
@@ -125,7 +125,7 @@ const handleRestError = (response, options, requestOptions, error) => {
 
   if (response.statusCode === 404) {
     return {
-      baseUrl: `${options.baseUrl}`,
+      baseUrl: options.baseUrl,
       detail: 'Not Found, Check your Confluence API URL.',
       statusCode: response.statusCode,
       requestOptions: sanitizedOptions
@@ -134,7 +134,7 @@ const handleRestError = (response, options, requestOptions, error) => {
 
   if (response.statusCode === 500) {
     return {
-      baseUrl: `${options.baseUrl}`,
+      baseUrl: options.baseUrl,
       detail: 'Network Error',
       statusCode: response.statusCode,
       requestOptions: sanitizedOptions

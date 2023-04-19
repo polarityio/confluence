@@ -1,4 +1,5 @@
 {
+  "polarityIntegrationUuid": "c2e3f2a0-cce1-11ed-aeee-075d3490155d",
   "name": "Confluence",
   "acronym": "CONF",
   "description": "Lookup Confluence pages by keywords or phrases",

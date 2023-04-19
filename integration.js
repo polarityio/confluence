@@ -10,7 +10,7 @@ let log = null;
 let requestWithDefaults;
 const MAX_PARALLEL_LOOKUPS = 5;
 
-function startup (logger) {
+function startup(logger) {
   log = logger;
 
   let defaults = {};
@@ -42,7 +42,7 @@ function startup (logger) {
   requestWithDefaults = request.defaults(defaults);
 }
 
-function doLookup (entities, options, cb) {
+function doLookup(entities, options, cb) {
   log.trace({ entities }, 'Checking to see if data is moving');
 
   const tasks = fp.map(
@@ -69,7 +69,7 @@ function doLookup (entities, options, cb) {
   });
 }
 
-function _createQuery (entityObj, options) {
+function _createQuery(entityObj, options) {
   let types = [];
   let keys = [];
 
@@ -109,10 +109,22 @@ function _createQuery (entityObj, options) {
 
 const handleRestError = (response, options, requestOptions, error) => {
   if (error) {
-    return error;
+    return {
+      detail: 'Network error encountered',
+      error
+    };
   }
 
   const sanitizedOptions = sanitizeOptions(requestOptions);
+
+  if (response.statusCode === 400) {
+    return {
+      baseUrl: options.baseUrl,
+      detail: 'Bad Request, Check your CQL Query, Or your Confluence API URL.',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
 
   if (response.statusCode === 401) {
     return {
@@ -135,7 +147,7 @@ const handleRestError = (response, options, requestOptions, error) => {
   if (response.statusCode === 500) {
     return {
       baseUrl: options.baseUrl,
-      detail: 'Network Error',
+      detail: 'Unexpected Confluence API Error.',
       statusCode: response.statusCode,
       requestOptions: sanitizedOptions
     };
@@ -147,13 +159,13 @@ const sanitizeOptions = (options) => {
   return options;
 };
 
-function _lookupEntity (entityObj, options, cb) {
+function _lookupEntity(entityObj, options, cb) {
   let blogData = [];
   let attachments = [];
   let pageData = [];
   let spaceData = [];
 
-  options.baseUrl = options.baseUrl.endsWith('/') ? options.baseUrl.slice(0, -1) : options.baseUrl; //does with work?
+  options.baseUrl = options.baseUrl.endsWith('/') ? options.baseUrl.slice(0, -1) : options.baseUrl;
   let uri = `${options.baseUrl}/rest/api/search`;
   let url = options.baseUrl;
   const cql = _createQuery(entityObj, options);
@@ -181,18 +193,11 @@ function _lookupEntity (entityObj, options, cb) {
   log.trace({ cql }, 'CQL Request Parameter');
 
   requestWithDefaults(requestOptions, function (error, response, body) {
+    log.trace({ response }, 'Response from Confluence');
     const restErr = handleRestError(response, options, requestOptions, error);
 
     if (restErr) {
       return cb(restErr);
-    }
-
-    if (response.statusCode === 400) {
-      cb(null, {
-        entity: entityObj,
-        data: null // setting data to null indicates to the server that this entity lookup was a "miss"
-      });
-      return;
     }
 
     // 200
@@ -278,7 +283,7 @@ function _lookupEntity (entityObj, options, cb) {
   });
 }
 
-function getSearchTypesString (options) {
+function getSearchTypesString(options) {
   const types = [];
   if (options.searchPage) {
     types.push('pages');
@@ -307,7 +312,7 @@ function getSearchTypesString (options) {
   }
 }
 
-function getSummaryTags (spaceData, pageData, blogData, attachments, options) {
+function getSummaryTags(spaceData, pageData, blogData, attachments, options) {
   const tags = [];
 
   if (options.searchPage) {
@@ -329,7 +334,7 @@ function getSummaryTags (spaceData, pageData, blogData, attachments, options) {
   return tags;
 }
 
-function validateOptions (userOptions, cb) {
+function validateOptions(userOptions, cb) {
   let errors = [];
   log.info({ userOptions }, 'validateOptions');
   if (

@@ -64,6 +64,7 @@ function doLookup(entities, options, cb) {
       return cb(err);
     }
 
+    log.trace({ lookupResults }, 'Lookup Results');
     cb(null, lookupResults);
   });
 }
@@ -106,6 +107,58 @@ function _createQuery(entityObj, options) {
   return query;
 }
 
+const handleRestError = (response, options, requestOptions, error) => {
+  if (error) {
+    return {
+      detail: 'Network error encountered',
+      error
+    };
+  }
+
+  const sanitizedOptions = sanitizeOptions(requestOptions);
+
+  if (response.statusCode === 400) {
+    return {
+      baseUrl: options.baseUrl,
+      detail: 'Bad Request, Check your CQL Query, Or your Confluence API URL.',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
+
+  if (response.statusCode === 401) {
+    return {
+      baseUrl: options.baseUrl,
+      detail: 'Authentication Error, check your API Key Or your Confluence API URL.',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
+
+  if (response.statusCode === 404) {
+    return {
+      baseUrl: options.baseUrl,
+      detail: 'Not Found, Check your Confluence API URL.',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
+
+  if (response.statusCode === 500) {
+    return {
+      baseUrl: options.baseUrl,
+      detail: 'Unexpected Confluence API Error.',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
+};
+
+const sanitizeOptions = (options) => {
+  options.auth.password = '********';
+  return options;
+};
+
 function _lookupEntity(entityObj, options, cb) {
   let blogData = [];
   let attachments = [];
@@ -139,33 +192,15 @@ function _lookupEntity(entityObj, options, cb) {
 
   log.trace({ cql }, 'CQL Request Parameter');
 
-  requestWithDefaults(requestOptions, function (err, response, body) {
-    // check for a request error
-    if (err) {
-      cb({
-        detail: 'Error Making HTTP Request',
-        debug: err
-      });
-      return;
+  requestWithDefaults(requestOptions, function (error, response, body) {
+    log.trace({ response }, 'Response from Confluence');
+    const restErr = handleRestError(response, options, requestOptions, error);
+
+    if (restErr) {
+      return cb(restErr);
     }
 
-    // If we get a 404 then cache a miss
-    if (response.statusCode === 404) {
-      cb(null, {
-        entity: entityObj,
-        data: null // setting data to null indicates to the server that this entity lookup was a "miss"
-      });
-      return;
-    }
-
-    if (response.statusCode === 400) {
-      cb(null, {
-        entity: entityObj,
-        data: null // setting data to null indicates to the server that this entity lookup was a "miss"
-      });
-      return;
-    }
-
+    // 200
     if (response.statusCode !== 200) {
       cb({
         detail: 'Unexpected HTTP Status Code Received',
@@ -268,7 +303,7 @@ function getSearchTypesString(options) {
 
   if (types.length > 1) {
     const front = types.slice(0, types.length - 1);
-    const end = types[types.length-1];
+    const end = types[types.length - 1];
     front.push(`and ${end}`);
     return front.join(', ');
   } else {

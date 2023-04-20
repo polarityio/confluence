@@ -57,7 +57,7 @@ module.exports = {
   },
 
   logging: {
-    level: 'info' //trace, debug, info, warn, error, fatal
+    level: 'info', //trace, debug, info, warn, error, fatal
   },
 
   request: {

@@ -115,7 +115,16 @@ const handleRestError = (response, options, requestOptions, error) => {
     };
   }
 
-  const sanitizedOptions = sanitizeOptions(requestOptions);
+  const sanitizedOptions = sanitizeRequestOptions(requestOptions);
+
+  if (response.statusCode === 403) {
+    return {
+      baseUrl: options.baseUrl,
+      detail: 'Forbidden, the requested action is forbidden for the provided authentication credentials.',
+      statusCode: response.statusCode,
+      requestOptions: sanitizedOptions
+    };
+  }
 
   if (response.statusCode === 400) {
     return {
@@ -154,9 +163,16 @@ const handleRestError = (response, options, requestOptions, error) => {
   }
 };
 
-const sanitizeOptions = (options) => {
-  options.auth.password = '********';
-  return options;
+const sanitizeRequestOptions = (requestOptions) => {
+  if (requestOptions && requestOptions.auth && requestOptions.password) {
+    requestOptions.auth.password = '********';
+  }
+
+  if (requestOptions && requestOptions.headers && requestOptions.headers.Authorization) {
+    requestOptions.headers.Authorization = `Bearer *********`;
+  }
+
+  return requestOptions;
 };
 
 function _lookupEntity(entityObj, options, cb) {

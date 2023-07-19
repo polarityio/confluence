@@ -42,6 +42,10 @@ A comma delimited list of Confluence Space Keys to search.  If left blank, all s
 
 If checked, the integration will return fewer results with more of an exact string match on your entities.
 
+### Search Titles Only
+
+If checked, the integration will only search the title of pages
+
 ### Confluence Page Search
 
 If checked, the integration will search keywords/phrases in Confluence pages

@@ -92,8 +92,8 @@ module.exports = {
         'Your Confluence Base Url to include the schema (i.e., https://) and port if required. Example "https://mycompany.atlassian.net/wiki".',
       default: '',
       type: 'text',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
     },
     {
       key: 'confluenceType',
@@ -124,8 +124,8 @@ module.exports = {
       description: 'Your Confluence account email address (only required for Confluence Cloud).',
       default: '',
       type: 'text',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
     },
     {
       key: 'apiKey',
@@ -133,8 +133,8 @@ module.exports = {
       description: 'Your Confluence API token (required for both Confluence Server and Confluence Cloud)',
       default: '',
       type: 'password',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
     },
     {
       key: 'spaceKeys',
@@ -143,8 +143,8 @@ module.exports = {
         'A comma delimited list of Confluence Space Keys to search.  If left blank, all spaces will be searched.',
       default: '',
       type: 'text',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
     },
     {
       key: 'reduceFuzziness',
@@ -153,8 +153,17 @@ module.exports = {
         'If checked, the integration will return fewer results with more of an exact string match on your entities.',
       default: true,
       type: 'boolean',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
+    },
+    {
+      key: 'searchTitlesOnly',
+      name: 'Search Titles Only',
+      description: 'If checked, the integration will only search the title of pages',
+      default: false,
+      type: 'boolean',
+      userCanEdit: false,
+      adminOnly: true
     },
     {
       key: 'searchPage',
@@ -162,8 +171,8 @@ module.exports = {
       description: 'If checked, the integration will search keywords/phrases in Confluence pages',
       default: true,
       type: 'boolean',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
     },
     {
       key: 'searchAttachments',
@@ -171,8 +180,8 @@ module.exports = {
       description: 'If checked, the integration will search keywords/phrases in Confluence attachments',
       default: true,
       type: 'boolean',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
     },
     {
       key: 'searchBlog',
@@ -180,8 +189,8 @@ module.exports = {
       description: 'If checked, the integration will search keywords/phrases in Confluence blogs',
       default: true,
       type: 'boolean',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
     },
     {
       key: 'searchSpace',
@@ -189,8 +198,8 @@ module.exports = {
       description: 'If checked, the integration will return Confluence space names that contain the search term',
       default: true,
       type: 'boolean',
-      userCanEdit: true,
-      adminOnly: false
+      userCanEdit: false,
+      adminOnly: true
     }
   ]
 };

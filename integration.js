@@ -98,7 +98,9 @@ function _createQuery(entityObj, options) {
     keyString = ` and space.key IN (${keys.join(',')}) `;
   }
 
-  let query = `text~'${
+  let searchLocation = options.searchTitlesOnly ? 'title' : 'text';
+
+  let query = `${searchLocation}~'${
     !options.reduceFuzziness
       ? fp.flow(fp.split(/[^\w]/g), fp.compact, fp.join(' '))(entityObj.value)
       : `"${entityObj.value}"~-0.5`

@@ -1,11 +1,11 @@
 {
   "name": "Confluence",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "main": "./integration.js",
   "private": true,
   "dependencies": {
     "async": "^3.2.4",
     "lodash": "^4.17.21",
-    "postman-request": "^2.88.1-postman.31"
+    "postman-request": "^2.88.1-postman.33"
   }
 }

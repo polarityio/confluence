@@ -6,15 +6,19 @@ The Polarity Confluence integration allows Polarity to search Confluence to retu
 
 ## Confluence Integration Options
 
-### Confluence URL
+### Confluence Base/API URL
 
-Your Confluence Base Url to include the schema (i.e., https://) and port if required.
+Your Confluence Base/API Url to include the schema (i.e., https://) and port if required.
 
 For example:
 
 ```
 https://mycompany.atlassian.net/wiki
 ```
+
+### Confluence Application URL
+
+URL used to access your Confluence web application instance. Leave blank if your Application URL is the same as your Base/API URL.  Confluence Cloud users can leave this option blank. This option must be set to "Lock and show option for all users" or "User provides option value".
 
 ### Confluence Version
 

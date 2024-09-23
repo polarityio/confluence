@@ -183,6 +183,7 @@ function _lookupEntity(entityObj, options, cb) {
   let pageData = [];
   let spaceData = [];
 
+  let appUrl = options.appUrl.length > 0 ? options.appUrl : options.baseUrl;
   options.baseUrl = options.baseUrl.endsWith('/') ? options.baseUrl.slice(0, -1) : options.baseUrl;
   let uri = `${options.baseUrl}/rest/api/search`;
   let url = options.baseUrl;
@@ -286,14 +287,14 @@ function _lookupEntity(entityObj, options, cb) {
         summary: getSummaryTags(spaceData, pageData, blogData, attachments, options),
         // Data that you want to pass back to the notification window details block
         details: {
-          url: url,
+          appUrl: appUrl,
           space: spaceData,
           page: pageData,
           blog: blogData,
           attachments: attachments,
           totalSize: body.totalSize,
           size: body.size,
-          searchLink: `${options.baseUrl}/search?text=${cql}`,
+          searchLink: `${appUrl}/search?text=${cql}`,
           searchTypesString: getSearchTypesString(options)
         }
       }

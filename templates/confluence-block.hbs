@@ -16,7 +16,7 @@
     {{#each data.space as |space|}}
       {{#if space.space.name}}
         <div class="result-container">
-          <div class="p-value p-block"><a href ="{{data.url}}{{space.url}}"> {{space.space.name}} </a></div>
+          <div class="p-value p-block"><a href ="{{data.appUrl}}{{space.url}}"> {{space.space.name}} </a></div>
           <div class="d-flex align-items-center justify-content-between meta-data">
             <div class="p-footnote">{{space.resultGlobalContainer.title}}</div>
             <div class="p-footnote">Updated: {{moment-format space.lastModified "YYYY-MM-DD" timeZone=timezone}}</div>
@@ -33,7 +33,7 @@
     {{#each data.page as |page|}}
       {{#if page.content.title}}
         <div class="result-container">
-          <div class="p-value p-block"><a href ="{{data.url}}{{page.content._links.webui}}"> {{page.content.title}} </a></div>
+          <div class="p-value p-block"><a href ="{{data.appUrl}}{{page.content._links.webui}}"> {{page.content.title}} </a></div>
           <div class="d-flex align-items-center justify-content-between meta-data">
             <div class="p-footnote">{{page.resultGlobalContainer.title}}</div>
             <div class="p-footnote">Updated: {{moment-format page.lastModified "YYYY-MM-DD" timeZone=timezone}}</div>
@@ -50,7 +50,7 @@
   {{#each data.blog as |blog|}}
     {{#if blog.content.title}}
       <div class="result-container">
-        <div class="p-value p-block"><a href ="{{data.url}}{{blog.content._links.webui}}"> {{blog.content.title}} </a></div>
+        <div class="p-value p-block"><a href ="{{data.appUrl}}{{blog.content._links.webui}}"> {{blog.content.title}} </a></div>
         <div class="d-flex align-items-center justify-content-between meta-data">
           <div class="p-footnote">{{blog.resultGlobalContainer.title}}</div>
           <div class="p-footnote">Updated: {{moment-format blog.lastModified "YYYY-MM-DD" timeZone=timezone}}</div>
@@ -67,7 +67,7 @@
   {{#each data.attachments as |attachment|}}
     {{#if attachment.content.title}}
       <div class="result-container">
-        <div class="p-value"><a href ="{{data.url}}{{attachment.content._links.webui}}"> {{attachment.content.title}}</a></div>
+        <div class="p-value"><a href ="{{data.appUrl}}{{attachment.content._links.webui}}"> {{attachment.content.title}}</a></div>
         <div class="d-flex align-items-center justify-content-between meta-data">
           <div class="p-footnote">{{attachment.resultGlobalContainer.title}}</div>
           <div class="p-footnote">Updated: {{moment-format attachment.lastModified "YYYY-MM-DD" timeZone=timezone}}</div>

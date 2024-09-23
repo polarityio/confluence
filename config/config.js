@@ -22,7 +22,7 @@ module.exports = {
    * @optional
    */
   description: 'Lookup Confluence pages by keywords or phrases',
-  entityTypes: ['*'],
+  entityTypes: ['IPv4', 'IPv6', 'IPv4CIDR', 'MD5', 'SHA1', 'SHA256', 'url', 'domain', 'email', 'cve'],
   // customTypes: [
   //   {
   //     key: 'possiblyDefangedUrl',
@@ -75,7 +75,7 @@ module.exports = {
     ca: '',
     // An HTTP proxy to be used. Supports proxy Auth with Basic Auth, identical to support for
     // the url parameter (by embedding the auth info in the uri)
-    proxy: ""
+    proxy: ''
   },
   /**
    * Options that are displayed to the user/admin in the Polarity integration user-interface.  Should be structured
@@ -94,6 +94,16 @@ module.exports = {
       type: 'text',
       userCanEdit: false,
       adminOnly: true
+    },
+    {
+      key: 'appUrl',
+      name: 'Confluence Application URL',
+      description:
+        'URL used to access your Confluence web application instance. Leave blank if your Application URL is the same as your API URL.  Confluence Cloud users can leave this option blank. This option must be set to "Lock and show option for all users" or "User provides option value".',
+      default: '',
+      type: 'text',
+      userCanEdit: false,
+      adminOnly: false
     },
     {
       key: 'confluenceType',

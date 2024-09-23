@@ -1,10 +1,18 @@
 {
-  "polarityIntegrationUuid": "c2e3f2a0-cce1-11ed-aeee-075d3490155d",
   "name": "Confluence",
   "acronym": "CONF",
   "description": "Lookup Confluence pages by keywords or phrases",
   "entityTypes": [
-    "*"
+    "IPv4",
+    "IPv6",
+    "IPv4CIDR",
+    "MD5",
+    "SHA1",
+    "SHA256",
+    "url",
+    "domain",
+    "email",
+    "cve"
   ],
   "defaultColor": "light-gray",
   "styles": [
@@ -37,6 +45,15 @@
       "type": "text",
       "userCanEdit": false,
       "adminOnly": true
+    },
+    {
+      "key": "appUrl",
+      "name": "Confluence Application URL",
+      "description": "URL used to access your Confluence web application instance. Leave blank if your Application URL is the same as your API URL.  Confluence Cloud users can leave this option blank. This option must be set to \"Lock and show option for all users\" or \"User provides option value\".",
+      "default": "",
+      "type": "text",
+      "userCanEdit": false,
+      "adminOnly": false
     },
     {
       "key": "confluenceType",
@@ -142,5 +159,6 @@
       "userCanEdit": false,
       "adminOnly": true
     }
-  ]
+  ],
+  "polarityIntegrationUuid": "c2e3f2a0-cce1-11ed-aeee-075d3490155d"
 }

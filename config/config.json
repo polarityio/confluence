@@ -15,6 +15,7 @@
     "email",
     "cve",
     {
+      "type": "custom",
       "name": "Possibly Defanged Url",
       "description": "Captures searched defanged URLs",
       "editable": true,

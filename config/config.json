@@ -18,7 +18,7 @@
       "type": "custom",
       "name": "Possibly Defanged Url",
       "description": "Captures searched defanged URLs",
-      "editable": true,
+      "editable": false,
       "enabled": false,
       "key": "possiblyDefangedUrl",
       "regex": "/(?:\\w+(?:(?:\\[:\\]\\/\\/)|(?::\\/\\/)|(?:\\[:\\/\\/\\])))?(?:\\w+\\.|(?:\\w+\\[\\.\\]))+\\w+(?:\\/(?:[\\/=\\.\\[\\]\\w&#@$%?-])*)?/"

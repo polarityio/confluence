@@ -2,7 +2,8 @@
   "name": "Confluence",
   "acronym": "CONF",
   "description": "Lookup Confluence pages by keywords or phrases",
-  "entityTypes": [
+  "supportsAdditionalCustomTypes": true,
+  "dataTypes": [
     "IPv4",
     "IPv6",
     "IPv4CIDR",
@@ -12,12 +13,20 @@
     "url",
     "domain",
     "email",
-    "cve"
+    "cve",
+    {
+      "type": "custom",
+      "name": "Possibly Defanged Url",
+      "description": "Captures searched defanged URLs",
+      "editable": false,
+      "enabled": false,
+      "key": "possiblyDefangedUrl",
+      "regex": "/(?:\\w+(?:(?:\\[:\\]\\/\\/)|(?::\\/\\/)|(?:\\[:\\/\\/\\])))?(?:\\w+\\.|(?:\\w+\\[\\.\\]))+\\w+(?:\\/(?:[\\/=\\.\\[\\]\\w&#@$%?-])*)?/"
+    }
   ],
+  "entityTypes": ["IPv4", "IPv6", "IPv4CIDR", "MD5", "SHA1", "SHA256", "url", "domain", "email", "cve"],
   "defaultColor": "light-gray",
-  "styles": [
-    "./styles/confluence.less"
-  ],
+  "styles": ["./styles/confluence.less"],
   "block": {
     "component": {
       "file": "./components/confluence-block.js"
@@ -28,13 +37,6 @@
   },
   "logging": {
     "level": "info"
-  },
-  "request": {
-    "cert": "",
-    "key": "",
-    "passphrase": "",
-    "ca": "",
-    "proxy": ""
   },
   "options": [
     {

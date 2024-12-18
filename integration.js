@@ -294,12 +294,20 @@ function _lookupEntity(entityObj, options, cb) {
           attachments: attachments,
           totalSize: body.totalSize,
           size: body.size,
-          searchLink: `${appUrl}/search?text=${cql}`,
+          searchLink: getSearchLink(appUrl, cql, options),
           searchTypesString: getSearchTypesString(options)
         }
       }
     });
   });
+}
+
+function getSearchLink(appUrl, cql, options){
+  if(options.confluenceType.value === 'cloud'){
+    return `${appUrl}/search?text=${cql}`;  
+  } else {
+    return `${appUrl}/dosearchsite.action?cql=${cql}`;
+  }  
 }
 
 function getSearchTypesString(options) {

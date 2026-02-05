@@ -1,0 +1,96 @@
+{
+  "root": {
+    "path": "",
+    "on_null": "return_empty"
+  },
+  "pipeline": [
+    {
+      "op": "copy",
+      "from": "page[].excerpt",
+      "to": "reduced_results.page_excerpts"
+    },
+    {
+      "op": "copy",
+      "from": "page[].content.title",
+      "to": "reduced_results.page_titles"
+    },
+    {
+      "op": "copy",
+      "from": "page[].lastModified",
+      "to": "reduced_results.page_last_modified"
+    },
+    {
+      "op": "copy",
+      "from": "page[].resultGlobalContainer",
+      "to": "reduced_results.page_containers"
+    },
+    {
+      "op": "copy",
+      "from": "attachments[].excerpt",
+      "to": "reduced_results.attachment_excerpts"
+    },
+    {
+      "op": "copy",
+      "from": "attachments[].content.title",
+      "to": "reduced_results.attachment_titles"
+    },
+    {
+      "op": "copy",
+      "from": "attachments[].lastModified",
+      "to": "reduced_results.attachment_last_modified"
+    },
+    {
+      "op": "copy",
+      "from": "attachments[].resultGlobalContainer",
+      "to": "reduced_results.attachment_containers"
+    },
+    {
+      "op": "copy",
+      "from": "blog[].excerpt",
+      "to": "reduced_results.blog_excerpts"
+    },
+    {
+      "op": "copy",
+      "from": "blog[].content.title",
+      "to": "reduced_results.blog_titles"
+    },
+    {
+      "op": "copy",
+      "from": "blog[].lastModified",
+      "to": "reduced_results.blog_last_modified"
+    },
+    {
+      "op": "copy",
+      "from": "blog[].resultGlobalContainer",
+      "to": "reduced_results.blog_containers"
+    },
+    {
+      "op": "copy",
+      "from": "space[].excerpt",
+      "to": "reduced_results.space_excerpts"
+    },
+    {
+      "op": "copy",
+      "from": "space[].space.name",
+      "to": "reduced_results.space_names"
+    },
+    {
+      "op": "copy",
+      "from": "space[].lastModified",
+      "to": "reduced_results.space_last_modified"
+    },
+    {
+      "op": "copy",
+      "from": "space[].resultGlobalContainer",
+      "to": "reduced_results.space_containers"
+    },
+    {
+      "op": "prune",
+      "strategy": "empty_values",
+      "target": "reduced_results"
+    }
+  ],
+  "output": {
+    "result": "$working.reduced_results"
+  }
+}

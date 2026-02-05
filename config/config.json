@@ -24,9 +24,22 @@
       "regex": "/(?:\\w+(?:(?:\\[:\\]\\/\\/)|(?::\\/\\/)|(?:\\[:\\/\\/\\])))?(?:\\w+\\.|(?:\\w+\\[\\.\\]))+\\w+(?:\\/(?:[\\/=\\.\\[\\]\\w&#@$%?-])*)?/"
     }
   ],
-  "entityTypes": ["IPv4", "IPv6", "IPv4CIDR", "MD5", "SHA1", "SHA256", "url", "domain", "email", "cve"],
+  "entityTypes": [
+    "IPv4",
+    "IPv6",
+    "IPv4CIDR",
+    "MD5",
+    "SHA1",
+    "SHA256",
+    "url",
+    "domain",
+    "email",
+    "cve"
+  ],
   "defaultColor": "light-gray",
-  "styles": ["./styles/confluence.less"],
+  "styles": [
+    "./styles/confluence.less"
+  ],
   "block": {
     "component": {
       "file": "./components/confluence-block.js"
@@ -162,5 +175,10 @@
       "adminOnly": true
     }
   ],
-  "polarityIntegrationUuid": "c2e3f2a0-cce1-11ed-aeee-075d3490155d"
+  "polarityIntegrationUuid": "c2e3f2a0-cce1-11ed-aeee-075d3490155d",
+  "reducer": {
+    "details": {
+      "file": "./reducers/details.json"
+    }
+  }
 }

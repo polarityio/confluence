@@ -1,0 +1,187 @@
+{
+  "appUrl": "https://mycompany.atlassian.net/wiki",
+  "space": [
+    {
+      "space": {
+        "id": 98305,
+        "key": "SEC",
+        "name": "Security Operations"
+      },
+      "excerpt": "This space contains security policies, incident response procedures, and threat intelligence documentation for the security team.",
+      "lastModified": "2024-01-15T14:32:18.000Z",
+      "url": "/spaces/SEC/overview",
+      "resultGlobalContainer": {
+        "title": "Security Operations - SEC",
+        "displayUrl": "https://mycompany.atlassian.net/wiki/spaces/SEC"
+      },
+      "entityType": "space",
+      "score": 0.92
+    },
+    {
+      "space": {
+        "id": 12847,
+        "key": "ENG",
+        "name": "Engineering Documentation"
+      },
+      "excerpt": "Central repository for all engineering documentation including architecture diagrams, API references, and development guidelines.",
+      "lastModified": "2024-01-10T09:15:42.000Z",
+      "url": "/spaces/ENG/overview",
+      "resultGlobalContainer": {
+        "title": "Engineering Documentation - ENG",
+        "displayUrl": "https://mycompany.atlassian.net/wiki/spaces/ENG"
+      },
+      "entityType": "space",
+      "score": 0.85
+    }
+  ],
+  "page": [
+    {
+      "content": {
+        "id": "45678912",
+        "type": "page",
+        "status": "current",
+        "title": "Incident Response Playbook",
+        "_links": {
+          "webui": "/spaces/SEC/pages/45678912/Incident+Response+Playbook",
+          "self": "https://mycompany.atlassian.net/wiki/rest/api/content/45678912"
+        }
+      },
+      "excerpt": "Step-by-step procedures for responding to security incidents including malware infections, data breaches, and unauthorized access attempts.",
+      "lastModified": "2024-01-14T16:45:33.000Z",
+      "resultGlobalContainer": {
+        "title": "Security Operations - SEC",
+        "displayUrl": "https://mycompany.atlassian.net/wiki/spaces/SEC"
+      },
+      "entityType": "page",
+      "score": 0.94,
+      "breadcrumbs": [
+        {
+          "label": "Security Operations",
+          "url": "/spaces/SEC"
+        },
+        {
+          "label": "Procedures",
+          "url": "/spaces/SEC/pages/123/Procedures"
+        }
+      ]
+    },
+    {
+      "content": {
+        "id": "78945612",
+        "type": "page",
+        "status": "current",
+        "title": "Threat Intelligence Feed Configuration",
+        "_links": {
+          "webui": "/spaces/SEC/pages/78945612/Threat+Intelligence+Feed+Configuration",
+          "self": "https://mycompany.atlassian.net/wiki/rest/api/content/78945612"
+        }
+      },
+      "excerpt": "Configuration guide for integrating external threat intelligence feeds including API setup, authentication, and data processing workflows.",
+      "lastModified": "2024-01-12T11:22:17.000Z",
+      "resultGlobalContainer": {
+        "title": "Security Operations - SEC",
+        "displayUrl": "https://mycompany.atlassian.net/wiki/spaces/SEC"
+      },
+      "entityType": "page",
+      "score": 0.88,
+      "breadcrumbs": [
+        {
+          "label": "Security Operations",
+          "url": "/spaces/SEC"
+        }
+      ]
+    }
+  ],
+  "blog": [
+    {
+      "content": {
+        "id": "32165498",
+        "type": "blogpost",
+        "status": "current",
+        "title": "Q1 2024 Security Incidents Summary",
+        "_links": {
+          "webui": "/spaces/SEC/blog/2024/01/15/Q1+2024+Security+Incidents+Summary",
+          "self": "https://mycompany.atlassian.net/wiki/rest/api/content/32165498"
+        }
+      },
+      "excerpt": "Quarterly review of all security incidents detected in Q1 2024, including phishing attempts, malware detections, and policy violations. Three critical incidents required immediate response.",
+      "lastModified": "2024-01-15T08:30:45.000Z",
+      "resultGlobalContainer": {
+        "title": "Security Operations - SEC",
+        "displayUrl": "https://mycompany.atlassian.net/wiki/spaces/SEC"
+      },
+      "entityType": "blogpost",
+      "author": {
+        "displayName": "Sarah Johnson",
+        "email": "sarah.johnson@mycompany.com"
+      },
+      "score": 0.91
+    }
+  ],
+  "attachments": [
+    {
+      "content": {
+        "id": "65498732",
+        "type": "attachment",
+        "status": "current",
+        "title": "threat-actor-profiles.pdf",
+        "metadata": {
+          "mediaType": "application/pdf",
+          "fileSize": 2847392
+        },
+        "_links": {
+          "webui": "/spaces/SEC/pages/45678912/threat-actor-profiles.pdf",
+          "download": "/download/attachments/45678912/threat-actor-profiles.pdf",
+          "self": "https://mycompany.atlassian.net/wiki/rest/api/content/65498732"
+        }
+      },
+      "excerpt": "Comprehensive profiles of known threat actors targeting our industry, including TTPs, indicators of compromise, and attribution information.",
+      "lastModified": "2024-01-13T14:18:26.000Z",
+      "resultGlobalContainer": {
+        "title": "Security Operations - SEC",
+        "displayUrl": "https://mycompany.atlassian.net/wiki/spaces/SEC"
+      },
+      "entityType": "attachment",
+      "score": 0.87,
+      "container": {
+        "id": "45678912",
+        "type": "page",
+        "title": "Incident Response Playbook"
+      }
+    },
+    {
+      "content": {
+        "id": "98732165",
+        "type": "attachment",
+        "status": "current",
+        "title": "ioc-feed-sample.csv",
+        "metadata": {
+          "mediaType": "text/csv",
+          "fileSize": 154832
+        },
+        "_links": {
+          "webui": "/spaces/SEC/pages/78945612/ioc-feed-sample.csv",
+          "download": "/download/attachments/78945612/ioc-feed-sample.csv",
+          "self": "https://mycompany.atlassian.net/wiki/rest/api/content/98732165"
+        }
+      },
+      "excerpt": "Sample indicators of compromise from external threat intelligence feeds including malicious IPs, domains, and file hashes from recent campaigns.",
+      "lastModified": "2024-01-11T10:05:13.000Z",
+      "resultGlobalContainer": {
+        "title": "Security Operations - SEC",
+        "displayUrl": "https://mycompany.atlassian.net/wiki/spaces/SEC"
+      },
+      "entityType": "attachment",
+      "score": 0.82,
+      "container": {
+        "id": "78945612",
+        "type": "page",
+        "title": "Threat Intelligence Feed Configuration"
+      }
+    }
+  ],
+  "totalSize": 47,
+  "size": 7,
+  "searchLink": "https://mycompany.atlassian.net/wiki/search?text=security",
+  "searchTypesString": "pages, blogs, attachments, and spaces"
+}
